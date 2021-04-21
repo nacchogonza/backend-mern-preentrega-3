@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>Formulario de Ingreso de Productos</h1>
+  <hr>
+
+  <form method="POST" action="/api/productos">
+    <label for="title">Title:</label><br>
+    <input type="text" name="title" placeholder="Title"><br>
+    <label for="price">Price:</label><br>
+    <input type="number" step="0.01" name="price" placeholder="Price"><br>
+    <label for="thumbnail">Thumbnail URL:</label><br>
+    <input type="text" name="thumbnail" placeholder="Thumbnail URL"><br><br>
+    <input type="hidden" name="form" value="1">
+    <input type="submit" value="Cargar Producto">
+  </form> 
+</body>
+</html>

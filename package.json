@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "name": "entregable-9",
+  "version": "1.0.0",
+  "description": "Entregable clase 9",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/index.js"
+  },
+  "author": "Ignacio Martin Gonzalez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
