@@ -1,11 +1,11 @@
 {
   "type": "module",
-  "name": "entregable-9",
+  "name": "entregable-15",
   "version": "1.0.0",
-  "description": "Entregable clase 9",
-  "main": "index.js",
+  "description": "Entregable clase 15",
+  "main": "./src/index.js",
   "scripts": {
-    "start": "node ./src/index.js"
+    "start": "node --es-module-specifier-resolution=node ./src/index.js"
   },
   "author": "Ignacio Martin Gonzalez",
   "license": "ISC",

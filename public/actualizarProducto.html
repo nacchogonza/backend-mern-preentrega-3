@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Document</title>
+  </head>
+  <body class="container">
+    <div class="bg-light p-5">
+      <header class="text-center">
+        <h1 class="text-primary font-weight-bold">Aplicacion de Productos</h1>
+      </header>
+    <div id="formulario">
+      
+    </div>
+
+  </div>
+  </body>
+</html>
+
+<script>
+
+  const administrador = true;
+  const querystring = window.location.search
+  const params = new URLSearchParams(querystring)
+  const id = (params.get('id'));
+
+  const url = `/api/productos/${id}`;
+
+  const data = fetch(url, {
+    method: "GET",
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((producto) => {
+      let htmlCode;
+      
+      if (administrador) {
+        htmlCode =
+    `
+    <h1>Formulario de Actualización de Producto</h1>
+    <h3><b>ID de Producto: ${id}</b></h3>
+      <hr />
+  
+      <form">
+        <div class="row">
+        <div class="form-group col-6">
+          <label for="title" class="font-italic">Nombre del producto</label>
+          <input value="${producto.title}" type="text" class="form-control" name="title" id="title" placeholder="Nombre del producto">
+        </div>
+        <div class="form-group col-6">
+          <label for="description">Descripción del Producto</label>
+          <input value="${producto.description}" type="text" class="form-control" name="description" id="description" placeholder="Descripción del producto">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="price">Precio del Producto</label>
+          <input value="${producto.price}" type="text" class="form-control" name="price" id="price" placeholder="Precio del producto">
+        </div>
+        <div class="form-group col-6">
+          <label for="thumbnail">Icono del Producto</label>
+          <input value="${producto.thumbnail}" type="text" class="form-control" name="thumbnail" id="thumbnail" placeholder="Icono del producto">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="code">Codigo del Producto</label>
+          <input value="${producto.code}" type="text" class="form-control" name="code" id="code" placeholder="Codigo del producto">
+        </div>
+        <div class="form-group col-6">
+          <label for="stock">Stock del Producto</label>
+          <input value="${producto.stock}" type="text" class="form-control" name="stock" id="stock" placeholder="Stock del producto">
+        </div>
+      </div>
+        <input type="hidden" name="form" id="form" value="1" />
+        <button class="btn btn-primary" onclick="updateProduct()">Actualizar Producto</button>
+      </form>
+    `
+  } else {
+    htmlCode =
+    `
+    <h3>No tiene permisos para modificar productos cargados</h3>
+    `
+  }
+  document.getElementById("formulario").innerHTML = `${htmlCode}`
+    });
+
+    const updateProduct = async () => {
+      let producto = {
+        title: document.getElementById("title").value,
+        description: document.getElementById("description").value,
+        price: document.getElementById("price").value,
+        thumbnail: document.getElementById("thumbnail").value,
+        code: document.getElementById("code").value,
+        stock: document.getElementById("stock").value,
+        form: document.getElementById("form").value
+      }
+
+      console.log(producto);
+
+      const url = `/api/productos/${id}`
+
+      const response = await fetch(url, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(producto)
+      }).then(res => res.json())
+      .then((json) => console.log('producto modificado: ', json));
+      window.location.assign('/');
+    }
+
+</script>

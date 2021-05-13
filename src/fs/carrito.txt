@@ -1,0 +1,1 @@
+{"id":1,"timestamp":1620866035095,"productos":[{"title":"Escuadra","price":"15.67","thumbnail":"https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png","description":"sdugsdjfsd","code":"23","stock":"45","timestamp":1620815988998,"id":1}]}
