@@ -1,8 +1,8 @@
 import express from 'express';
-import { Carrito } from '../api/Carrito.js';
-import { productos } from './RouterApi.js';
+import { productos, carrito } from '../index';
 
-let carrito = new Carrito();
+
+/* HAY QUE CAMBIAR CARRITO A FORMATO ARRAY PARA PODER UTILIZAR ID CARRITO O BIEN HARDCODEAR EL 1 */
 
 const routerCarrito = express.Router();
 routerCarrito.use(express.json())
@@ -21,7 +21,7 @@ routerCarrito.get('/carrito', async (req, res) => {
 routerCarrito.get('/carrito/:id', async (req, res) => {
   const data = req.params.id;
   const productoCarrito = await carrito.getProducto(data)
-  if (productoCarrito === undefined || !productoCarrito.productos) {
+  if (productoCarrito === undefined || productoCarrito === null) { // || !productoCarrito.productos
     res.json({error: 'no existe producto con el id ingresado'})
     return;
   };

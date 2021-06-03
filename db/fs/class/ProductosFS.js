@@ -1,11 +1,12 @@
 import fs from "fs";
-class Productos {
+
+class ProductosFS {
   constructor() {}
 
   async getProductos() {
     try {
       const data = await fs.promises.readFile(
-        "./src/fs/productos.txt",
+        "./db/fs/fs/productos.txt",
         "utf-8"
       );
       return JSON.parse(data);
@@ -21,7 +22,7 @@ class Productos {
   async getProducto(id) {
     try {
       const data = await fs.promises.readFile(
-        "./src/fs/productos.txt",
+        "./db/fs/fs/productos.txt",
         "utf-8"
       );
       const dataJson = JSON.parse(data);
@@ -42,7 +43,7 @@ class Productos {
       if (data && !data.length) {
         producto.id = 1;
         await fs.promises.writeFile(
-          './src/fs/productos.txt',
+          './db/fs/fs/productos.txt',
           JSON.stringify([producto])
         );
         return producto
@@ -50,7 +51,7 @@ class Productos {
         producto.id = data.length + 1;
         data.push(producto);
         await fs.promises.writeFile(
-          './src/fs/productos.txt',
+          './db/fs/fs/productos.txt',
           JSON.stringify(data)
         );
         return producto;
@@ -77,7 +78,7 @@ class Productos {
           if (productUpdate.stock) product.stock = productUpdate.stock;
         }
         await fs.promises.writeFile(
-          './src/fs/productos.txt',
+          './db/fs/fs/productos.txt',
           JSON.stringify(data)
         );
         return product;
@@ -99,7 +100,7 @@ class Productos {
             (producto) => producto.id != id
           );
           await fs.promises.writeFile(
-            './src/fs/productos.txt',
+            './db/fs/fs/productos.txt',
             JSON.stringify(filterArray)
           );
           return product;
@@ -111,4 +112,4 @@ class Productos {
   }
 }
 
-export { Productos };
+export { ProductosFS};

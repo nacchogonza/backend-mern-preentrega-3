@@ -1,6 +1,15 @@
 import express from 'express';
+import { DbPersistence } from '../db/DbPersistence';
 import { routerApi } from './router/RouterApi';
 import { routerCarrito } from './router/RouterCarrito';
+
+/* DEFINICION DEL TIPO DE PERSISTENCIA POR CONSTANTE */
+const persistenceType = 2;
+
+const persistence = new DbPersistence();
+const { productos, carrito } = persistence.getPersistence(persistenceType);
+export { productos, carrito };
+
 
 const app = express();
 app.use('/api', routerApi);

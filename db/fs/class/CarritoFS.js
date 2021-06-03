@@ -1,14 +1,12 @@
 import fs from "fs";
 
-class Carrito {
-  constructor() {
-
-  }
+class CarritoFS {
+  constructor() {}
 
   async getProductos () {
     try {
       const data = await fs.promises.readFile(
-        "./src/fs/carrito.txt",
+        "./db/fs/fs/carrito.txt",
         "utf-8"
       );
       const dataJson = JSON.parse(data);
@@ -27,7 +25,7 @@ class Carrito {
   async getProducto(id) {
     try {
       const data = await fs.promises.readFile(
-        "./src/fs/carrito.txt",
+        "./db/fs/fs/carrito.txt",
         "utf-8"
       );
       const dataJson = JSON.parse(data);
@@ -58,14 +56,14 @@ class Carrito {
         carrito.productos = []
         carrito.productos.push(product);
         await fs.promises.writeFile(
-          './src/fs/carrito.txt',
+          './db/fs/fs/carrito.txt',
           JSON.stringify(carrito)
         );
         return carrito
       } else {
         data.productos.push(product);
         await fs.promises.writeFile(
-          './src/fs/carrito.txt',
+          './db/fs/fs/carrito.txt',
           JSON.stringify(data)
         );
         return data;
@@ -92,7 +90,7 @@ class Carrito {
           );
           data.productos = filterArray;
           await fs.promises.writeFile(
-            './src/fs/carrito.txt',
+            './db/fs/fs/carrito.txt',
             JSON.stringify(data)
           );
           return product;
@@ -113,4 +111,4 @@ class Carrito {
   }
 }
 
-export { Carrito };
+export { CarritoFS };

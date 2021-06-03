@@ -1,7 +1,6 @@
 import express from 'express';
-import { Productos } from '../api/Productos';
+import { productos } from '../index';
 
-const productos = new Productos();
 const administrador = true;
 
 const routerApi = express.Router();
