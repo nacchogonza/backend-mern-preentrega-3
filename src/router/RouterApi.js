@@ -35,7 +35,10 @@ routerApi.post('/productos', async (req, res) => {
 
 routerApi.get('/productos/:id', async (req, res) => {
   const filterProduct = await productos.getProducto(req.params.id);
-  if (!filterProduct) res.json({error: 'producto no encontrado'})
+  if (!filterProduct) {
+    res.json({error: 'producto no encontrado'})
+    return
+  }
   res.json(filterProduct);
 })
 

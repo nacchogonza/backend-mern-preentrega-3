@@ -97,6 +97,8 @@
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(producto)
     }).then(res => console.log('producto agregado: ', res.json()))
+
+    window.location.reload()
   }
 
   const addToCart = async (id) => {

@@ -10,7 +10,6 @@ routerCarrito.use(express.urlencoded({extended: true}));
 
 routerCarrito.get('/carrito', async (req, res) => {
   const productosCarrito = await carrito.getProductos()
-
   if (productosCarrito === undefined || productosCarrito === null || !productosCarrito.productos) {
     res.json({error: 'todavia no hay productos en el carrito'});
     return;
@@ -22,7 +21,7 @@ routerCarrito.get('/carrito/:id', async (req, res) => {
   const data = req.params.id;
   const productoCarrito = await carrito.getProducto(data)
   if (productoCarrito === undefined || productoCarrito === null) { // || !productoCarrito.productos
-    res.json({error: 'no existe producto con el id ingresado'})
+    res.json({error: 'no existe producto con el id ingresado en el carrito'})
     return;
   };
   res.json(productoCarrito)
@@ -31,7 +30,7 @@ routerCarrito.get('/carrito/:id', async (req, res) => {
 routerCarrito.post('/carrito/:id', async (req, res) => {
   const data = req.params.id;
   const productList = await productos.getProductos()
-  const product = productList.find((producto) => producto.id === parseInt(data))
+  const product = productList.find((producto) => parseInt(producto.id) === parseInt(data))
   if (product === undefined) {
     res.json({error: 'no existe producto con el id ingresado'})
     return;

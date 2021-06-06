@@ -4,7 +4,7 @@ import { routerApi } from './router/RouterApi';
 import { routerCarrito } from './router/RouterCarrito';
 
 /* DEFINICION DEL TIPO DE PERSISTENCIA POR CONSTANTE */
-const persistenceType = 2;
+const persistenceType = 0;
 
 const persistence = new DbPersistence();
 const { productos, carrito } = persistence.getPersistence(persistenceType);
