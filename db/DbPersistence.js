@@ -1,4 +1,5 @@
 import { ProductosMemory } from './memory/Productos'
+import { CarritosMemory } from './memory/Carrito'
 
 import { ProductosFS } from "./fs/class/ProductosFS";
 import { CarritoFS } from "./fs/class/CarritoFS"
@@ -25,7 +26,7 @@ export class DbPersistence {
     switch (persistenceId) {
       case 0:
         const productosMemory = new ProductosMemory();
-        const carritoMemory = new CarritoFS();
+        const carritoMemory = new CarritosMemory();
         return {
           carrito: carritoMemory,
           productos: productosMemory
