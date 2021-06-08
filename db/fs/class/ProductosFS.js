@@ -3,13 +3,30 @@ import fs from "fs";
 class ProductosFS {
   constructor() {}
 
-  async getProductos() {
+  async getProductos(filterParams) {
     try {
       const data = await fs.promises.readFile(
         "./db/fs/fs/productos.txt",
         "utf-8"
       );
-      return JSON.parse(data);
+      let filterArray = JSON.parse(data);
+      if (filterParams.name) {
+        const filterArrayName = filterArray.filter(product => filterParams.name === product.title)
+        filterArray = filterArrayName
+      }
+      if (filterParams.code) {
+        const filterArrayCode = filterArray.filter(product => filterParams.code == product.code)
+        filterArray = filterArrayCode
+      }
+      if (filterParams.price_min && filterParams.price_max) {
+        const filterArrayPrice = filterArray.filter(product => product.price >= filterParams.price_min && product.price <= filterParams.price_max)
+        filterArray = filterArrayPrice
+      }
+      if (filterParams.stock_min && filterParams.stock_max) {
+        const filterArrayStock = filterArray.filter(product => product.stock >= filterParams.stock_min && product.stock <= filterParams.stock_max)
+        filterArray = filterArrayStock
+      }
+      return filterArray;
     } catch (error) {
       if (error.code == "ENOENT") {
         console.log([]);

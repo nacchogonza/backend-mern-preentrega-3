@@ -8,7 +8,17 @@ routerApi.use(express.json())
 routerApi.use(express.urlencoded({extended: true}));
 
 routerApi.get('/productos', async (req, res) => {
-  const data = await productos.getProductos()
+  console.log(req.query.name)
+  const filterParams = {
+    name: req.query.name,
+    code: req.query.code,
+    price_max: req.query.price_max,
+    price_min: req.query.price_min,
+    stock_max: req.query.stock_max,
+    stock_min: req.query.stock_min,
+  }
+  console.log(`filterParams-->`, filterParams)
+  const data = await productos.getProductos(filterParams)
   if (!data.length) {
     res.json({error: 'no hay productos cargados'})
     return;

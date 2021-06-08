@@ -1,99 +1,129 @@
-import { ProductosMemory } from './memory/Productos'
-import { CarritosMemory } from './memory/Carrito'
+import { ProductosMemory } from "./memory/Productos";
+import { CarritosMemory } from "./memory/Carrito";
 
 import { ProductosFS } from "./fs/class/ProductosFS";
-import { CarritoFS } from "./fs/class/CarritoFS"
+import { CarritoFS } from "./fs/class/CarritoFS";
 
-import { ProductosMYSQL } from './mysql/local/ProductosMYSQL'
-import { CarritoMYSQL } from './mysql/local/CarritoMYSQL'
+import { ProductosMYSQL } from "./mysql/local/ProductosMYSQL";
+import { CarritoMYSQL } from "./mysql/local/CarritoMYSQL";
 
-import { ProductosSQLITE } from './sqlite/ProductosSQLITE'
-import { CarritoSQLITE } from './sqlite/CarritoSQLITE'
+import { ProductosSQLITE } from "./sqlite/ProductosSQLITE";
+import { CarritoSQLITE } from "./sqlite/CarritoSQLITE";
 
-import {connectCloudDB} from './mongo/cloud/Connection'
-import {connectLocalDB} from './mongo/local/Connection'
-import { ProductosMongoCloud } from './mongo/FunctionsProductos'
-import { CarritosMongoCloud } from './mongo/FunctionsCarritos'
+import { connectCloudDB } from "./mongo/cloud/Connection";
+import { connectLocalDB } from "./mongo/local/Connection";
+import { ProductosMongoCloud } from "./mongo/FunctionsProductos";
+import { CarritosMongoCloud } from "./mongo/FunctionsCarritos";
 
-import { ProductosFirebase } from './firebase/ProductosFirebase'
-import { CarritosFirebase } from './firebase/CarritosFirebase'
-
+import { ProductosFirebase } from "./firebase/ProductosFirebase";
+import { CarritosFirebase } from "./firebase/CarritosFirebase";
 
 export class DbPersistence {
   constructor() {}
 
-  getPersistence (persistenceId) {
+  getPersistence(persistenceId) {
     switch (persistenceId) {
-      case 0:
+      case 0: // MEMORY
         const productosMemory = new ProductosMemory();
         const carritoMemory = new CarritosMemory();
         return {
           carrito: carritoMemory,
-          productos: productosMemory
+          productos: productosMemory,
         };
 
-      case 1:
+      case 1: // FILE SYSTEM
         const productosFS = new ProductosFS();
         const carritoFS = new CarritoFS();
         return {
           carrito: carritoFS,
-          productos: productosFS
+          productos: productosFS,
         };
 
-      case 2:
+      case 2: // MYSQL LOCAL
         const productosMYSQL = new ProductosMYSQL({
-          client: 'mysql',
+          client: "mysql",
           connection: {
-            host: 'localhost',
+            host: "localhost",
             port: 3307,
-            user: 'root',
-            password: '',
-            database: 'ecommerce'
-          }
+            user: "root",
+            password: "",
+            database: "ecommerce",
+          },
         });
 
         const carritoMYSQL = new CarritoMYSQL({
-          client: 'mysql',
+          client: "mysql",
           connection: {
-            host: 'localhost',
+            host: "localhost",
             port: 3307,
-            user: 'root',
-            password: '',
-            database: 'ecommerce'
-          }
+            user: "root",
+            password: "",
+            database: "ecommerce",
+          },
         });
-        
-        productosMYSQL.crearTabla()
-        carritoMYSQL.crearTabla()
+
+        productosMYSQL.crearTabla();
+        carritoMYSQL.crearTabla();
 
         return {
           carrito: carritoMYSQL,
-          productos: productosMYSQL
+          productos: productosMYSQL,
         };
-        
+
+      case 3: // MYSQL CLOUD
+        const productosMYSQLCloud = new ProductosMYSQL({
+          client: "mysql",
+          connection: {
+            host: "url:toCloud",
+            port: 3306,
+            user: "root",
+            password: "",
+            database: "ecommerce",
+          },
+        });
+
+        const carritoMYSQLCloud = new CarritoMYSQL({
+          client: "mysql",
+          connection: {
+            host: "url:toCloud",
+            port: 3306,
+            user: "root",
+            password: "",
+            database: "ecommerce",
+          },
+        });
+
+        productosMYSQL.crearTabla();
+        carritoMYSQL.crearTabla();
+
+        return {
+          carrito: carritoMYSQLCloud,
+          productos: productosMYSQLCloud,
+        };
+
       case 4: // SQLITE
         const carritoSQLITE = new CarritoSQLITE({
-          client: 'sqlite3',
+          client: "sqlite3",
           connection: {
             filename: "./db/sqlite/mydb.sqlite",
           },
-          useNullAsDefault: true
-        })
+          useNullAsDefault: true,
+        });
 
         const productosSQLITE = new ProductosSQLITE({
-          client: 'sqlite3',
+          client: "sqlite3",
           connection: {
             filename: "./db/sqlite/mydb.sqlite",
           },
-          useNullAsDefault: true
-        })
+          useNullAsDefault: true,
+        });
 
-        productosSQLITE.crearTabla()
-        carritoSQLITE.crearTabla()
+        productosSQLITE.crearTabla();
+        carritoSQLITE.crearTabla();
 
         return {
           carrito: carritoSQLITE,
-          productos: productosSQLITE
+          productos: productosSQLITE,
         };
 
       case 5: // MONGO LOCAL
@@ -101,7 +131,7 @@ export class DbPersistence {
 
         return {
           carrito: CarritosMongoCloud,
-          productos: ProductosMongoCloud
+          productos: ProductosMongoCloud,
         };
 
       case 6: // MONGO CLOUD
@@ -109,16 +139,14 @@ export class DbPersistence {
 
         return {
           carrito: CarritosMongoCloud,
-          productos: ProductosMongoCloud
+          productos: ProductosMongoCloud,
         };
 
-      case 7: // MONGO CLOUD
-      
+      case 7: // FIREBASE
         return {
           carrito: CarritosFirebase,
-          productos: ProductosFirebase
+          productos: ProductosFirebase,
         };
-        
     }
   }
 }
