@@ -1,8 +1,8 @@
 {
   "type": "module",
-  "name": "entregable-15",
+  "name": "preentrega-3",
   "version": "1.0.0",
-  "description": "Entregable clase 15",
+  "description": "Preentrega 3 del proyecto final",
   "main": "./src/index.js",
   "scripts": {
     "start": "node --es-module-specifier-resolution=node ./src/index.js"
