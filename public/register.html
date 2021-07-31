@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+  <title>Aplicacion de carga de Productos</title>
+  <script src="js/index.js"></script>
+</head>
+<body class="container">
+  <div class="bg-success">
+  <header class="text-center">
+    <h1 class="text-primary font-weight-bold">Aplicacion de Carga de Productos</h1>
+  </header>
+
+  <div style="padding: 20px;">
+    <!-- <form action="/api/productos" method="post"> -->
+    <form class="form" action="/register" method="post" role="form" autocomplete="off">
+      <div class="form-group">
+        <label for="username" class="font-italic">Usuario</label>
+        <input type="email" class="form-control" name="username" id="username" placeholder="Usuario">
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+      </div>
+      <div class="form-group">
+        <label for="nombre">Nombre Completo</label>
+        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+      </div>
+      <div class="form-group">
+        <label for="direccion">Direccion</label>
+        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Direccion">
+      </div>
+      <div class="form-group">
+        <label for="edad">Edad</label>
+        <input type="number" class="form-control" name="edad" id="edad" placeholder="Edad">
+      </div>
+      <div class="form-group">
+        <label for="telefono">Teléfono</label>
+        <input type="tel" class="form-control" name="telefono" id="telefono" placeholder="Teléfono">
+      </div>
+      <div class="form-group">
+        <label for="avatar">Foto o Avatar</label>
+        <input type="text" class="form-control" name="avatar" id="avatar" placeholder="Foto o Avatar">
+      </div>
+      <input type="hidden" name="form" value="1" />
+      <button type="submit" class="btn btn-primary">REGISTRAR</button>
+    </form>
+    <br>
+    <button onclick="location.href = '/loginPage'" class="btn btn-primary">IR A LOGIN</button>
+  </div>
+
+<footer class="text-center" style="padding-top: 10px;">
+  <p>Backend MERN - Preentrega Nº 3</p>
+</footer>
+</div>
+</body>
+</html>

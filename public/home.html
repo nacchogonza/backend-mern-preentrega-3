@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Document</title>
+  </head>
+  <body class="container">
+    <div class="bg-light p-5">
+      <header class="text-center">
+        <h1 class="text-primary font-weight-bold">Aplicacion de Productos</h1>
+      </header>
+      <button id="buttonAgregar" type="submit" onclick="location.href = '/logout'" class="btn btn-primary">Cerrar Sesión</button>
+    <div id="formulario">
+    </div>
+
+    <div class="text-center pb-2">
+      <a href="/carrito.html">
+        <button class="btn btn-primary">Ir al carrito</button>
+      </a>
+    </div>
+
+    <br>
+    <div class="pb-5">
+      <h3>Filtro de búsqueda</h1>
+      <hr />
+  
+      <div>
+        <div class="row">
+          <div class="form-group col-6">
+            <label for="filterName" class="font-italic">Nombre del producto</label>
+            <input type="text" class="form-control" name="filterName" id="filterName" placeholder="Nombre del producto">
+          </div>
+          <div class="form-group col-6">
+            <label for="filterCode">Código del Producto</label>
+            <input type="text" class="form-control" name="filterCode" id="filterCode" placeholder="Descripción del producto">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-3">
+            <label for="filterPriceMin">Precio Mín.</label>
+            <input type="text" class="form-control" name="filterPriceMin" id="filterPriceMin" placeholder="Precio del producto">
+          </div>
+          <div class="form-group col-3">
+            <label for="filterPriceMax">Precio Max.</label>
+            <input type="text" class="form-control" name="filterPriceMax" id="filterPriceMax" placeholder="Icono del producto">
+          </div>
+          <div class="form-group col-3">
+            <label for="filterStockMin">Stock Mín.</label>
+            <input type="text" class="form-control" name="filterStockMin" id="filterStockMin" placeholder="Precio del producto">
+          </div>
+          <div class="form-group col-3">
+            <label for="filterStockMax">Stock Max.</label>
+            <input type="text" class="form-control" name="filterStockMax" id="filterStockMax" placeholder="Icono del producto">
+          </div>
+        </div>
+      
+        <input type="hidden" name="form" id="form" value="1" />
+        <button id="buttonAgregar" type="submit" onclick="filterProducts()" class="btn btn-primary">Filtrar Productos</button>
+      </div>
+    </div>
+    <h3>Listado de Productos</h3>
+    <hr>
+    <div class="row pt-5" id="lista">
+    </div>
+  </div>
+  </body>
+</html>
+
+<script>
+
+  const administrador = true;
+  let updateProduct = false;
+
+  if (administrador) {
+    document.getElementById("formulario").innerHTML = `
+    <h1>Formulario de Ingreso de Productos</h1>
+      <hr />
+  
+      <form onsubmit="return addProduct(this)">
+        <div class="row">
+        <div class="form-group col-6">
+          <label for="title" class="font-italic">Nombre del producto</label>
+          <input type="text" class="form-control" name="title" id="title" placeholder="Nombre del producto">
+        </div>
+        <div class="form-group col-6">
+          <label for="description">Descripción del Producto</label>
+          <input type="text" class="form-control" name="description" id="description" placeholder="Descripción del producto">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="price">Precio del Producto</label>
+          <input type="text" class="form-control" name="price" id="price" placeholder="Precio del producto">
+        </div>
+        <div class="form-group col-6">
+          <label for="thumbnail">Icono del Producto</label>
+          <input type="text" class="form-control" name="thumbnail" id="thumbnail" placeholder="Icono del producto">
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-6">
+          <label for="code">Codigo del Producto</label>
+          <input type="text" class="form-control" name="code" id="code" placeholder="Codigo del producto">
+        </div>
+        <div class="form-group col-6">
+          <label for="stock">Stock del Producto</label>
+          <input type="text" class="form-control" name="stock" id="stock" placeholder="Stock del producto">
+        </div>
+      </div>
+        <input type="hidden" name="form" id="form" value="1" />
+        <button id="buttonAgregar" type="submit" class="btn btn-primary">Agregar Producto</button>
+      </form>
+    `
+  }
+
+  const addProduct = async () => {
+    let producto = {
+      title: document.getElementById("title").value,
+      description: document.getElementById("description").value,
+      price: document.getElementById("price").value,
+      thumbnail: document.getElementById("thumbnail").value,
+      code: document.getElementById("code").value,
+      stock: document.getElementById("stock").value,
+      form: document.getElementById("form").value
+    }
+
+  const response = await fetch("/api/productos", {
+      method: "POST",
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(producto)
+    }).then(res => console.log('producto agregado: ', res.json()))
+
+    window.location.reload()
+  }
+
+  const filterProducts = async () => {
+
+    const filterName = document.getElementById("filterName").value;
+    const filterCode = document.getElementById("filterCode").value;
+    const filterPriceMin = document.getElementById("filterPriceMin").value;
+    const filterPriceMax = document.getElementById("filterPriceMax").value;
+    const filterStockMax = document.getElementById("filterStockMax").value;
+    const filterStockMin = document.getElementById("filterStockMin").value;
+
+    let element = document.getElementById("lista");
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+
+    const data = fetch(`/api/productos?name=${filterName}&code=${filterCode}&price_max=${filterPriceMax}&price_min=${filterPriceMin}&stock_max=${filterStockMax}&stock_min=${filterStockMin}`, {
+    method: "GET",
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((json) => {
+      if (!json.length) {
+        document.getElementById("lista").innerHTML = `<h3>No hay productos cargados</h3>`
+        return
+      }
+      let htmlCode;
+      
+      if (administrador) {
+        htmlCode = json.map(product => (
+    `
+    <div class="col-md-4 pb-5">
+      <div class="card" style="width: 15rem;">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">${product.title}</h5>
+          <p><b>ID:</b> ${product.id}</p>
+          <p><b>Descripción:</b> ${product.description}</p>
+          <p><b>Precio:</b> ${product.price}</p>
+          <p><b>Code:</b> ${product.code}</p>
+          <p><b>Stock:</b> ${product.stock}</p>
+          <div class="text-center pb-2">
+            <button class="btn btn-primary" onclick="addToCart(${product.id})">Agregar al Carrito</button>
+          </div>
+          <div class="text-center pb-2">
+            <a href="/actualizarProducto.html?id=${product.id}">
+              <button class="btn btn-primary" onclick="updateProductButton(${product.id})">Actualizar</button>
+            </a>
+          </div>
+          <div class="text-center pb-2">
+            <button class="btn btn-primary" onclick="deleteProduct(${product.id})">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+    )).join(" ")
+  } else {
+    htmlCode = json.map(product => (
+    `
+    <div class="col-md-4 pb-5">
+      <div class="card" style="width: 15rem;">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">${product.title}</h5>
+          <p><b>ID:</b> ${product.id}</p>
+          <p><b>Descripción:</b> ${product.description}</p>
+          <p><b>Precio:</b> ${product.price}</p>
+          <p><b>Code:</b> ${product.code}</p>
+          <p><b>Stock:</b> ${product.stock}</p>
+          <div class="text-center">
+            <button class="btn btn-primary" onclick="addToCart(${product.id})">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+    )).join(" ")
+  }
+  document.getElementById("lista").innerHTML = `${htmlCode}`
+    });
+
+    // window.location.reload()
+  }
+
+  const addToCart = async (id) => {
+    const url = `/api/carrito/${id}`
+    const response = await fetch(url, {
+      method: "POST",
+    }).then((res) => {
+      return res.json()
+    })
+    .then((json) => console.log('producto agregado al carrito: ', json));
+  }
+
+  const deleteProduct = async (id) => {
+    const url = `/api/productos/${id}`
+
+    const response = await fetch(url, {
+      method: "DELETE"
+    }).then(res => res.json())
+    .then((json) => console.log('producto eliminado al carrito: ', json));
+    window.location.reload();
+  }
+
+  const data = fetch(`/api/productos`, {
+    method: "GET",
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((json) => {
+      if (!json.length) {
+        document.getElementById("lista").innerHTML = `<h3>No hay productos cargados</h3>`
+        return
+      }
+      let htmlCode;
+      
+      if (administrador) {
+        htmlCode = json.map(product => (
+    `
+    <div class="col-md-4 pb-5">
+      <div class="card" style="width: 15rem;">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">${product.title}</h5>
+          <p><b>ID:</b> ${product.id}</p>
+          <p><b>Descripción:</b> ${product.description}</p>
+          <p><b>Precio:</b> ${product.price}</p>
+          <p><b>Code:</b> ${product.code}</p>
+          <p><b>Stock:</b> ${product.stock}</p>
+          <div class="text-center pb-2">
+            <button class="btn btn-primary" onclick="addToCart(${product.id})">Agregar al Carrito</button>
+          </div>
+          <div class="text-center pb-2">
+            <a href="/actualizarProducto.html?id=${product.id}">
+              <button class="btn btn-primary" onclick="updateProductButton(${product.id})">Actualizar</button>
+            </a>
+          </div>
+          <div class="text-center pb-2">
+            <button class="btn btn-primary" onclick="deleteProduct(${product.id})">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+    )).join(" ")
+  } else {
+    htmlCode = json.map(product => (
+    `
+    <div class="col-md-4 pb-5">
+      <div class="card" style="width: 15rem;">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">${product.title}</h5>
+          <p><b>ID:</b> ${product.id}</p>
+          <p><b>Descripción:</b> ${product.description}</p>
+          <p><b>Precio:</b> ${product.price}</p>
+          <p><b>Code:</b> ${product.code}</p>
+          <p><b>Stock:</b> ${product.stock}</p>
+          <div class="text-center">
+            <button class="btn btn-primary" onclick="addToCart(${product.id})">Agregar al Carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    `
+    )).join(" ")
+  }
+  document.getElementById("lista").innerHTML = `${htmlCode}`
+    });
+</script>
