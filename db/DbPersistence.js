@@ -11,9 +11,10 @@ import { ProductosSQLITE } from "./sqlite/ProductosSQLITE";
 import { CarritoSQLITE } from "./sqlite/CarritoSQLITE";
 
 import { connectCloudDB } from "./mongo/cloud/Connection";
-import { connectLocalDB } from "./mongo/local/Connection";
+/* import { connectLocalDB } from "./mongo/local/Connection"; */
 import { ProductosMongoCloud } from "./mongo/FunctionsProductos";
 import { CarritosMongoCloud } from "./mongo/FunctionsCarritos";
+import { UsuariosMongoCloud } from "./mongo/FunctionsUsuarios";
 
 import { ProductosFirebase } from "./firebase/ProductosFirebase";
 import { CarritosFirebase } from "./firebase/CarritosFirebase";
@@ -127,12 +128,12 @@ export class DbPersistence {
         };
 
       case 5: // MONGO LOCAL
-        connectLocalDB();
+        /* connectLocalDB();
 
         return {
           carrito: CarritosMongoCloud,
           productos: ProductosMongoCloud,
-        };
+        }; */
 
       case 6: // MONGO CLOUD
         connectCloudDB();
@@ -140,6 +141,7 @@ export class DbPersistence {
         return {
           carrito: CarritosMongoCloud,
           productos: ProductosMongoCloud,
+          usuarios: UsuariosMongoCloud
         };
 
       case 7: // FIREBASE

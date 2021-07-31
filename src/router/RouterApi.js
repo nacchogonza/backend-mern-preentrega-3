@@ -17,7 +17,6 @@ routerApi.get('/productos', async (req, res) => {
     stock_max: req.query.stock_max,
     stock_min: req.query.stock_min,
   }
-  console.log(`filterParams-->`, filterParams)
   const data = await productos.getProductos(filterParams)
   if (!data.length) {
     res.json({error: 'no hay productos cargados'})

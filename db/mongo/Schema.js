@@ -1,15 +1,15 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 /* SCHEMAS */
 
 const carritosSchema = new mongoose.Schema({
   id: {
-      type: Number,
-      require: true,
+    type: Number,
+    require: true,
   },
   timestamp: {
-      type: Number,
-      require: true,
+    type: Number,
+    require: true,
   },
   productos: {
     type: Array,
@@ -23,23 +23,23 @@ const productosSchema = new mongoose.Schema({
     require: true,
   },
   title: {
-      type: String,
-      require: true,
-      max: 100
+    type: String,
+    require: true,
+    max: 100,
   },
   description: {
     type: String,
     require: true,
-    max: 100
-},
+    max: 100,
+  },
   price: {
-      type: Number,
-      require: true,
+    type: Number,
+    require: true,
   },
   thumbnail: {
     type: String,
     require: true,
-    max: 255
+    max: 255,
   },
   code: {
     type: Number,
@@ -55,13 +55,48 @@ const productosSchema = new mongoose.Schema({
   },
 });
 
+const usuariosSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    require: true,
+    max: 100,
+    unique: true,
+  },
+  password: {
+    type: String,
+    require: true,
+    max: 200,
+  },
+  nombre: {
+    type: String,
+    require: true,
+    max: 100,
+  },
+  direccion: {
+    type: String,
+    require: true,
+    max: 100,
+  },
+  edad: {
+    type: Number,
+    require: true,
+  },
+  telefono: {
+    type: String,
+    require: true,
+    max: 50,
+  },
+  avatar: {
+    type: String,
+    require: true,
+    max: 100,
+  },
+});
+
 /* MODELS */
 
-const DaoCarritos = mongoose.model('carritos', carritosSchema);
-const DaoProductos = mongoose.model('productos', productosSchema);
+const DaoCarritos = mongoose.model("carritos", carritosSchema);
+const DaoProductos = mongoose.model("productos", productosSchema);
+const DaoUsuarios = mongoose.model("usuarios", usuariosSchema);
 
-
-export { DaoCarritos, DaoProductos }
-
-
-
+export { DaoCarritos, DaoProductos, DaoUsuarios };
