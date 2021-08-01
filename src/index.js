@@ -2,7 +2,6 @@ import express from 'express';
 import { DbPersistence } from '../db/DbPersistence';
 import { routerApi } from './router/RouterApi';
 import { routerCarrito } from './router/RouterCarrito';
-import fetch from 'node-fetch';
 
 /* PASSPORT */
 import bCrypt from 'bcrypt';
@@ -12,6 +11,7 @@ import {Strategy as LocalStrategy} from 'passport-local';
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import MongoStore from 'connect-mongo';
+import nodemailer from 'nodemailer';
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const URL = 'mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce?retryWrites=true&w=majority';
@@ -31,6 +31,30 @@ const isValidPassword = (user, password) => {
   return bCrypt.compareSync(password, user.password)
 }
 
+const MAIL_ADMIN = 'nachomgonzalez93@gmail.com'
+const SMS_ADMIN = '+542945404287'
+
+const gmailUser = 'nachomgonzalez93@gmail.com'
+const gmailPass = 'ouikpvfrztcmqqhy'
+
+const transporterGmail = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: gmailUser,
+      pass: gmailPass
+  }
+});
+
+const sendGmailEmail = (mailOptions) => {
+  transporterGmail.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      logger.log('error', err);
+      return err;
+    }
+    logger.log('info', info);
+  })
+}
+
 /* LOGIN Y REGISTRO */
 
 passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (req, username, password, done) => {
@@ -41,7 +65,8 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (r
 
   const usuario = usersDb.find(usuario => usuario.username == username)
   if (usuario) {
-    return done('Usuario ya registrado')
+    // return done('Usuario ya registrado')
+    return done(null, false, {message: 'Usuario ya registrado'})
   }
 
   const hashPassword = createHash(password);
@@ -57,6 +82,24 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (r
   }
   await usuarios.postUsuario(user)
 
+  const mailOptionsGmail = {
+    from: "Servidor Eccomerce",
+    to: MAIL_ADMIN,
+    subject: 'Nuevo Registro de Usuario',
+    html: `
+      <h2>Nuevo Usuario Registrado!</h2>
+      <p>Usuario: ${user.username}</p>
+      <p>Nombre Completo: ${user.nombre}</p>
+      <p>Direccion: ${user.direccion}</p>
+      <p>Edad: ${user.edad}</p>
+      <p>Telefono: ${user.telefono}</p>
+      <p>Avatar:</p>
+      <img style="width: 5rem; height: 5rem;" src="${user.avatar}" />
+    `,
+  }
+
+  sendGmailEmail(mailOptionsGmail)
+
   return done(null, user)
 }));
 
@@ -65,8 +108,6 @@ passport.use('login', new LocalStrategy(async (username, password, done) => {
   const usersDb = await usuarios.getUsuarios();
 
   const user = usersDb.find(usuario => usuario.username == username)
-
-  console.log(user)
 
   if (!user) {
     return done(null, false)
@@ -91,8 +132,6 @@ passport.deserializeUser(async function (username, done) {
 
 /* LOGIN Y REGISTRO */
 const app = express();
-app.use('/api', routerApi);
-app.use('/api', routerCarrito);
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
@@ -107,9 +146,12 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 10, /* TIEMPO DE SESION: 10 MINUTOS */
+    maxAge: 1000 * 60 * 60, /* TIEMPO DE SESION: 10 MINUTOS */
   }
 }))
+
+app.use('/api', routerApi);
+app.use('/api', routerCarrito);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -144,6 +186,18 @@ app.get("/logout", async (req, res) => {
   req.session.destroy(err => {
     res.redirect("/")
   });
+});
+
+app.get("/user-info", isAuth, async (req, res) => {
+  const user = req.session.passport.user;
+  const usersDb = await usuarios.getUsuarios();
+
+  const usuario = usersDb.find(usuario => usuario.username == user)
+  if (usuario) {
+    res.send(usuario)
+  } else {
+    res.send({error: 'usuario no logueado'})
+  }
 });
 
 app.get('/register', (req, res) => {

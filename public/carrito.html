@@ -9,7 +9,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <title>Document</title>
+    <title>Carrito de compras</title>
   </head>
   <body class="container">
     <div class="bg-light p-5">
@@ -70,21 +70,22 @@
       <hr />
     <div class="col-md-4 pb-5">
       <div class="card" style="width: 15rem;">
-        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.product.thumbnail}" alt="Card image cap">
         <div class="card-body">
-          <h5 class="card-title">${product.title}</h5>
-          <p><b>ID:</b> ${product.id}</p>
-          <p><b>Descripción:</b> ${product.description}</p>
-          <p><b>Precio:</b> ${product.price}</p>
-          <p><b>Code:</b> ${product.code}</p>
-          <p><b>Stock:</b> ${product.stock}</p>
+          <h5 class="card-title">${product.product.title}</h5>
+          <p><b>ID:</b> ${product.product.id}</p>
+          <p><b>Descripción:</b> ${product.product.description}</p>
+          <p><b>Precio:</b> ${product.product.price}</p>
+          <p><b>Code:</b> ${product.product.code}</p>
+          <p><b>Stock:</b> ${product.product.stock}</p>
+          <p><b>Cantidad:</b> ${product.quantity}</p>
           <div class="text-center pb-2">
-            <a href="/actualizarProducto.html?id=${product.id}">
+            <a href="/actualizarProducto.html?id=${product.product.id}">
               <button class="btn btn-primary">Actualizar</button>
             </a>
           </div>
           <div class="text-center pb-2">
-            <button class="btn btn-primary" onclick="deleteProductCart(${product.id})">Eliminar del Carrito</button>
+            <button class="btn btn-primary" onclick="deleteProductCart(${product.product.id})">Eliminar del Carrito</button>
           </div>
         </div>
       </div>
@@ -96,16 +97,17 @@
     `
     <div class="col-md-4 pb-5">
       <div class="card" style="width: 15rem;">
-        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.product.thumbnail}" alt="Card image cap">
         <div class="card-body">
-          <h5 class="card-title">${product.title}</h5>
-          <p><b>ID:</b> ${product.id}</p>
-          <p><b>Descripción:</b> ${product.description}</p>
-          <p><b>Precio:</b> ${product.price}</p>
-          <p><b>Code:</b> ${product.code}</p>
-          <p><b>Stock:</b> ${product.stock}</p>
+          <h5 class="card-title">${product.product.title}</h5>
+          <p><b>ID:</b> ${product.product.id}</p>
+          <p><b>Descripción:</b> ${product.product.description}</p>
+          <p><b>Precio:</b> ${product.product.price}</p>
+          <p><b>Code:</b> ${product.product.code}</p>
+          <p><b>Stock:</b> ${product.product.stock}</p>
+          <p><b>Cantidad:</b> ${product.quantity}</p>
           <div class="text-center pb-2">
-            <button class="btn btn-primary" onclick="deleteProductCart(${product.id})">Eliminar del Carrito</button>
+            <button class="btn btn-primary" onclick="deleteProductCart(${product.product.id})">Eliminar del Carrito</button>
           </div>
         </div>
       </div>

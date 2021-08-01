@@ -4,7 +4,9 @@ import mongoose from "mongoose";
 
 const carritosSchema = new mongoose.Schema({
   id: {
-    type: Number,
+    type: String,
+    max: 100,
+    unique: true,
     require: true,
   },
   timestamp: {

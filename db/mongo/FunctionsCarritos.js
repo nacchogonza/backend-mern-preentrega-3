@@ -3,20 +3,20 @@ import { DaoCarritos } from './Schema'
 
 /* CARRITOS FUNCTIONS */
 
-const getProductos = async  () => {
+const getProductos = async (user) => {
   try {
-    const data = await DaoCarritos.findOne({id: 1}, {productos: 1});
+    const data = await DaoCarritos.findOne({id: user}, {productos: 1});
     return data
   } catch (error) {
     console.log('Error al obtener productos del carrito: ', error); 
   }
 }
 
-const getProducto = async (id) => {
+const getProducto = async (user, id) => {
   try {
-    const data = await DaoCarritos.findOne({id: 1}, {productos: 1});
+    const data = await DaoCarritos.findOne({id: user}, {productos: 1});
     if (data && data.productos) {
-      const producto = data.productos.find(product => product.id === parseInt(id))
+      const producto = data.productos.find(product => product.product.id === parseInt(id))
       return producto
     }
     return null
@@ -25,39 +25,46 @@ const getProducto = async (id) => {
   }
 }
 
-const postProducto = async (newProduct) => {
-  const dataDB = await DaoCarritos.find();
-  if (!dataDB.length) {
+const postProducto = async (user, newProduct) => {
+  const dataDB = await DaoCarritos.findOne({id: user});
+  if (!dataDB) {
     const newCart = await DaoCarritos.create({
-      id: 1, 
+      id: user, 
       timestamp: Date.now(), 
-      productos: [newProduct], 
+      productos: [{quantity: 1, product: newProduct}], 
     });
     return newCart
   } else {
-    const auxProducts = dataDB[0].productos;
-    auxProducts.push(newProduct);
-    const updateCartStatus = await DaoCarritos.updateOne({id: 1}, {$set: {
+    const userCart = await DaoCarritos.findOne({id: user});
+    if (!userCart) return null;
+    const auxProducts = userCart.productos;
+    const productExists = auxProducts.find(product => product.product.id === newProduct.id)
+    if (!productExists) {
+      auxProducts.push({quantity: 1, product: newProduct});
+    } else {
+      productExists.quantity++;
+    }
+    const updateCartStatus = await DaoCarritos.updateOne({id: user}, {$set: {
       productos: auxProducts, 
     }})
     if (updateCartStatus?.ok === 1) {
-      const data = await DaoCarritos.find({id: 1}, {productos: 1});
-      return data[0]
+      const data = await DaoCarritos.findOne({id: user}, {productos: 1});
+      return data
     }
     return null
   }
 }
 
-const deleteProducto = async (id) => {
-  const data = await DaoCarritos.findOne({id: 1}, {productos: 1});
+const deleteProducto = async (user, id) => {
+  const data = await DaoCarritos.findOne({id: user}, {productos: 1});
   if (data && data.productos) {
-    const auxProducts = data.productos.filter(product => product.id !== parseInt(id))
-    const updateCartStatus = await DaoCarritos.updateOne({id: 1}, {$set: {
+    const auxProducts = data.productos.filter(product => product.product.id !== parseInt(id))
+    const updateCartStatus = await DaoCarritos.updateOne({id: user}, {$set: {
       productos: auxProducts, 
     }})
     if (updateCartStatus?.ok === 1) {
-      const data = await DaoCarritos.find({id: 1}, {productos: 1});
-      return data[0]
+      const data = await DaoCarritos.find({id: user}, {productos: 1});
+      return data
     }
     return null
   }

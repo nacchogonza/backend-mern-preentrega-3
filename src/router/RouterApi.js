@@ -8,7 +8,6 @@ routerApi.use(express.json())
 routerApi.use(express.urlencoded({extended: true}));
 
 routerApi.get('/productos', async (req, res) => {
-  console.log(req.query.name)
   const filterParams = {
     name: req.query.name,
     code: req.query.code,

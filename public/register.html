@@ -20,31 +20,31 @@
     <form class="form" action="/register" method="post" role="form" autocomplete="off">
       <div class="form-group">
         <label for="username" class="font-italic">Usuario</label>
-        <input type="email" class="form-control" name="username" id="username" placeholder="Usuario">
+        <input type="email" required class="form-control" name="username" id="username" placeholder="Usuario">
       </div>
       <div class="form-group">
         <label for="password">Contraseña</label>
-        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+        <input type="password" required class="form-control" name="password" id="password" placeholder="Password">
       </div>
       <div class="form-group">
         <label for="nombre">Nombre Completo</label>
-        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre">
+        <input type="text" required class="form-control" name="nombre" id="nombre" placeholder="Nombre">
       </div>
       <div class="form-group">
         <label for="direccion">Direccion</label>
-        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Direccion">
+        <input type="text" required class="form-control" name="direccion" id="direccion" placeholder="Direccion">
       </div>
       <div class="form-group">
         <label for="edad">Edad</label>
-        <input type="number" class="form-control" name="edad" id="edad" placeholder="Edad">
+        <input type="number" required class="form-control" name="edad" id="edad" placeholder="Edad">
       </div>
       <div class="form-group">
         <label for="telefono">Teléfono</label>
-        <input type="tel" class="form-control" name="telefono" id="telefono" placeholder="Teléfono">
+        <input type="tel" required required class="form-control" name="telefono" id="telefono" placeholder="Teléfono">
       </div>
       <div class="form-group">
         <label for="avatar">Foto o Avatar</label>
-        <input type="text" class="form-control" name="avatar" id="avatar" placeholder="Foto o Avatar">
+        <input type="text" required class="form-control" name="avatar" id="avatar" placeholder="Foto o Avatar">
       </div>
       <input type="hidden" name="form" value="1" />
       <button type="submit" class="btn btn-primary">REGISTRAR</button>
