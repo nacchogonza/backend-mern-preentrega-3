@@ -4,11 +4,28 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
     <title>Carrito de compras</title>
   </head>
   <body class="container">
@@ -16,22 +33,26 @@
       <header class="text-center">
         <h1 class="text-primary font-weight-bold">Aplicacion de Productos</h1>
       </header>
-    <div class="row pt-5" id="carrito">
-      
-    </div>
+      <div class="row pt-5" id="carrito"></div>
 
-    <div class="text-center pb-2">
-      <a href="/">
-        <button class="btn btn-primary">Volver al Listado</button>
-      </a>
+      <div class="text-center pb-2">
+        <button
+          id="buttonAgregar"
+          type="submit"
+          onclick="confirmCart()"
+          class="btn btn-primary"
+        >
+          Confirmar Carrito
+        </button>
+        <a href="/">
+          <button class="btn btn-primary">Volver al Listado</button>
+        </a>
+      </div>
     </div>
-
-  </div>
   </body>
 </html>
 
 <script>
-
   const administrador = false;
   const url = `/api/carrito`;
 
@@ -42,14 +63,15 @@
 
     const response = await fetch(deleteUrl, {
       method: "DELETE",
-    }).then((res) => {
-      return res.json()
     })
-    .then((json) => console.log('producto eliminado al carrito: ', json));
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => console.log("producto eliminado al carrito: ", json));
     window.location.reload();
-  }
+  };
 
-  const data = fetch(url, {
+  const getDataCart = fetch(url, {
     method: "GET",
   })
     .then((res) => {
@@ -58,14 +80,18 @@
     .then((productos) => {
       console.log(productos);
       if (!productos.length) {
-        document.getElementById("carrito").innerHTML = `<h3>No hay productos cargados</h3>`
-        return
+        document.getElementById(
+          "carrito"
+        ).innerHTML = `<h3>No hay productos cargados</h3>`;
+        return;
       }
       let htmlCode;
-      
+
       if (administrador) {
-        htmlCode = productos.map(product => (
-    `
+        htmlCode = productos
+          .map(
+            (product) =>
+              `
     <h1>Carrito de compras</h1>
       <hr />
     <div class="col-md-4 pb-5">
@@ -91,10 +117,13 @@
       </div>
     </div>
     `
-    )).join(" ")
-  } else {
-    htmlCode = productos.map(product => (
-    `
+          )
+          .join(" ");
+      } else {
+        htmlCode = productos
+          .map(
+            (product) =>
+              `
     <div class="col-md-4 pb-5">
       <div class="card" style="width: 15rem;">
         <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.product.thumbnail}" alt="Card image cap">
@@ -113,33 +142,41 @@
       </div>
     </div>
     `
-    )).join(" ")
-  }
-  document.getElementById("carrito").innerHTML = `${htmlCode}`
-});
-
-    const updateProduct = async () => {
-      let producto = {
-        title: document.getElementById("title").value,
-        description: document.getElementById("description").value,
-        price: document.getElementById("price").value,
-        thumbnail: document.getElementById("thumbnail").value,
-        code: document.getElementById("code").value,
-        stock: document.getElementById("stock").value,
-        form: document.getElementById("form").value
+          )
+          .join(" ");
       }
+      document.getElementById("carrito").innerHTML = `${htmlCode}`;
+    });
 
-      console.log(producto);
+  const updateProduct = async () => {
+    let producto = {
+      title: document.getElementById("title").value,
+      description: document.getElementById("description").value,
+      price: document.getElementById("price").value,
+      thumbnail: document.getElementById("thumbnail").value,
+      code: document.getElementById("code").value,
+      stock: document.getElementById("stock").value,
+      form: document.getElementById("form").value,
+    };
 
-      const url = `/api/productos/${id}`
+    const url = `/api/productos/${id}`;
 
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(producto)
-      }).then(res => res.json())
-      .then((json) => console.log('producto modificado: ', json));
-      window.location.assign('/');
-    }
+    const response = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(producto),
+    })
+      .then((res) => res.json())
+      .then((json) => console.log("producto modificado: ", json));
+    window.location.assign("/");
+  };
 
+  const confirmCart = () => {
+    const url = `/api/carrito`;
+    fetch(url, {
+      method: "POST",
+    })
+      .then((res) => console.log('Carrito confirmado!'))
+    window.location.assign("/");
+  }
 </script>

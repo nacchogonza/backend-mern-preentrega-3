@@ -1,5 +1,5 @@
 import express from 'express';
-import { productos, carrito } from '../index';
+import { productos, carrito, usuarios } from '../index';
 
 
 /* HAY QUE CAMBIAR CARRITO A FORMATO ARRAY PARA PODER UTILIZAR ID CARRITO O BIEN HARDCODEAR EL 1 */
@@ -16,6 +16,23 @@ routerCarrito.get('/carrito', async (req, res) => {
     return;
   }
   res.json(productosCarrito.productos)
+})
+
+routerCarrito.post('/carrito', async (req, res) => {
+  const user = req.session.passport.user
+  const usersDb = await usuarios.getUsuarios();
+
+  const usuario = usersDb.find(usuario => usuario.username == user)
+  if (usuario) {
+    const userCart = await carrito.confirmCart(usuario)
+    if (userCart) {
+      res.json(userCart);
+    } else {
+      res.json({error: 'carrito no encontrado'})
+    }
+  } else {
+    res.json({error: 'usuario no encontrado'})
+  }
 })
 
 routerCarrito.get('/carrito/:id', async (req, res) => {
