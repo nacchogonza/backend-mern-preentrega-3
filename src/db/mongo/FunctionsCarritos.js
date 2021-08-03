@@ -63,7 +63,7 @@ const postProducto = async (user, newProduct) => {
       }
     );
     if (updateCartStatus?.ok === 1) {
-      const data = await DaoCarriTWILIO_FROM_SMStos.findOne({ id: user }, { productos: 1 });
+      const data = await DaoCarritos.findOne({ id: user }, { productos: 1 });
       return data;
     }
     return null;
