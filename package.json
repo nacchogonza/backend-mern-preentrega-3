@@ -5,7 +5,7 @@
   "description": "Preentrega 3 del proyecto final",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node --es-module-specifier-resolution=node ./src/index.js"
+    "start": "node -r dotenv/config --es-module-specifier-resolution=node ./src/index.js"
   },
   "author": "Ignacio Martin Gonzalez",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "bcrypt": "^5.0.1",
     "connect-mongo": "^4.4.1",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "firebase-admin": "^9.9.0",
@@ -23,10 +24,14 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "sqlite3": "^5.0.2",
+    "twilio": "^3.66.1",
     "winston": "^3.3.3"
   },
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "artillery": "^1.7.6"
   }
 }

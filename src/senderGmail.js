@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import { logger } from "./logger";
 
 const gmailUser = "nachomgonzalez93@gmail.com";
-const gmailPass = "ouikpvfrztcmqqhy";
+const gmailPass = process.env.GMAIL_PASS;
 
 const transporterGmail = nodemailer.createTransport({
   service: "gmail",

@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import { logger } from "../../../logger";
 
-const URL =
-  "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce?retryWrites=true&w=majority";
+const URL = process.env.MONGO_URL;
 
 export const connectCloudDB = () => {
   try {

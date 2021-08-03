@@ -179,4 +179,17 @@
       .then((res) => console.log('Carrito confirmado!'))
     window.location.assign("/");
   }
+
+  const getDataUsuario = fetch('/user-info', {
+    method: 'GET',
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then((user) => {
+      console.log('usuario logueado!')
+    })
+    .catch((err) => {
+      location.href = '/home'
+    })
 </script>

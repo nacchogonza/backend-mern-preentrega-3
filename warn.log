@@ -1,3 +1,14 @@
 {"level":"warn","message":"carrito no encontrado"}
 {"level":"warn","message":"carrito no encontrado"}
 {"level":"warn","message":"carrito no encontrado"}
+{"stringValue":"\"null\"","kind":"Number","value":"null","path":"id","reason":{"generatedMessage":true,"code":"ERR_ASSERTION","actual":false,"expected":true,"operator":"=="},"valueType":"string","level":"error","message":"Error al obtener producto por id:  Cast to Number failed for value \"null\" (type string) at path \"id\" for model \"productos\"","stack":"CastError: Cast to Number failed for value \"null\" (type string) at path \"id\" for model \"productos\"\n    at model.Query.exec (/home/nacchogonza/Escritorio/backend-mern-preentrega-3/node_modules/mongoose/lib/query.js:4478:21)\n    at model.Query.Query.then (/home/nacchogonza/Escritorio/backend-mern-preentrega-3/node_modules/mongoose/lib/query.js:4572:15)\n    at processTicksAndRejections (node:internal/process/task_queues:94:5)"}
+{"level":"error","message":"Error enviando SMS: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando Whatsapp: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando SMS: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando Whatsapp: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando SMS: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando Whatsapp: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando Whatsapp: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando SMS: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando Whatsapp: Error: Authentication Error - invalid username"}
+{"level":"error","message":"Error enviando SMS: Error: Authentication Error - invalid username"}

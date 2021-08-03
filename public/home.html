@@ -81,7 +81,7 @@
 
   const administrador = true;
   let updateProduct = false;
-
+  
   if (administrador) {
     document.getElementById("formulario").innerHTML = `
     <h1>Formulario de Ingreso de Productos</h1>
@@ -223,8 +223,6 @@
   }
   document.getElementById("lista").innerHTML = `${htmlCode}`
     });
-
-    // window.location.reload()
   }
 
   const addToCart = async (id) => {
@@ -268,6 +266,9 @@
       `
 
       document.getElementById("datos-usuario").innerHTML = `${htmlCode}`
+    })
+    .catch((err) => {
+      location.href = '/home'
     })
 
   const getDataProductos = fetch(`/api/productos`, {

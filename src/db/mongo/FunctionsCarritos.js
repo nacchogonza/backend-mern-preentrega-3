@@ -1,8 +1,11 @@
 import { DaoCarritos } from "./Schema";
 import { sendGmailEmail } from "../../senderGmail";
 import { logger } from "../../logger";
+import { sendWpp } from "../../senderWpp";
+import { sendSms } from "../../senderSms";
 
 const MAIL_ADMIN = "nachomgonzalez93@gmail.com";
+const WPP_ADMIN = "whatsapp:+5492945404287";
 
 /* CARRITOS FUNCTIONS */
 
@@ -60,7 +63,7 @@ const postProducto = async (user, newProduct) => {
       }
     );
     if (updateCartStatus?.ok === 1) {
-      const data = await DaoCarritos.findOne({ id: user }, { productos: 1 });
+      const data = await DaoCarriTWILIO_FROM_SMStos.findOne({ id: user }, { productos: 1 });
       return data;
     }
     return null;
@@ -120,14 +123,23 @@ const confirmCart = async (user) => {
 
     sendGmailEmail(mailOptionsGmail);
 
-    /* TODO: sendWpp */
-    /* TODO: sendUserSMS */
+    sendWpp({
+      body: `Nuevo pedido de ${user.nombre} (${user.username})`,
+      userPhone: WPP_ADMIN,
+    });
+
+    sendSms({
+      body: `Su pedido a nombre de ${user.username} ha sido recibido correctamente y está siendo procesado`,
+      userPhone: user.telefono,
+    });
 
     try {
-      const deleteduserCart = await DaoCarritos.findOneAndDelete({ id: user.username });
+      const deleteduserCart = await DaoCarritos.findOneAndDelete({
+        id: user.username,
+      });
       return deleteduserCart;
     } catch (error) {
-      logger.log("error", error);    
+      logger.log("error", error);
     }
   }
   logger.log("warn", "carrito no encontrado");
