@@ -232,7 +232,10 @@
     }).then((res) => {
       return res.json()
     })
-    .then((json) => console.log('producto agregado al carrito: ', json));
+    .then((json) => {
+      console.log('producto agregado al carrito: ', json)
+      location.href = '/carrito.html'
+    });
   }
 
   const deleteProduct = async (id) => {
